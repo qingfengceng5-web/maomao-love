@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>给毛毛的温馨提示 ❤️</title>
+<style>
+body {
+    margin: 0;
+    overflow: hidden;
+    background: #fffafc;
+    font-family: "Microsoft YaHei", sans-serif;
+}
+
+.tip {
+    position: absolute;
+    width: 250px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    border-radius: 12px;
+    color: #333;
+    font-weight: bold;
+    animation: pop 0.3s ease;
+}
+
+@keyframes pop {
+    from { transform: scale(0.5); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+</style>
+</head>
+
+<body>
+
+<script>
+const tips = [
+'毛毛要多喝水哦~','毛毛要保持微笑呀','毛毛每天都要元气满满',
+'毛毛要好好吃饭哦~','毛毛要保持好心情','毛毛要好好爱自己',
+'毛毛梦想成真','每天都超爱毛毛','毛毛新年快乐',
+'毛毛顺顺利利','毛毛要早点休息','毛毛所有的烦恼都消失',
+'毛毛天下第一好','毛毛别熬夜哦~','毛毛要多穿衣服~',
+'毛毛，你是最棒的','毛毛是最优秀的宝宝'
+];
+
+const colors = [
+'lightpink','skyblue','lightgreen','lavender',
+'lightyellow','plum','coral','bisque','aquamarine',
+'mistyrose','honeydew','lavenderblush','oldlace'
+];
+
+let count = 0;
+let max = 200;
+
+function createTip() {
+    if (count >= max) {
+        setTimeout(() => {
+            document.body.innerHTML = "<h1 style='text-align:center;margin-top:40vh;color:pink;'>毛毛，我永远爱你 ❤️</h1>";
+        }, 3000);
+        return;
+    }
+
+    let div = document.createElement("div");
+    div.className = "tip";
+    div.innerText = tips[Math.floor(Math.random() * tips.length)];
+    div.style.background = colors[Math.floor(Math.random() * colors.length)];
+
+    div.style.left = Math.random() * (window.innerWidth - 250) + "px";
+    div.style.top = Math.random() * (window.innerHeight - 60) + "px";
+
+    document.body.appendChild(div);
+
+    count++;
+    setTimeout(createTip, 200);
+}
+
+createTip();
+</script>
+
+</body>
+</html>
