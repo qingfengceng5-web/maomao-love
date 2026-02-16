@@ -2,13 +2,14 @@
 <html lang="zh">
 <head>
 <meta charset="UTF-8">
-<title>毛毛新年快乐❤️</title>
+<title>毛毛的新年烟花 ❤️</title>
 <style>
 body {
     margin: 0;
     overflow: hidden;
-    background: #fffafc;
+    background: radial-gradient(circle at bottom, #00111a, #000);
     font-family: "Microsoft YaHei", sans-serif;
+    color: white;
 }
 
 .tip {
@@ -20,43 +21,65 @@ body {
     align-items: center;
     font-size: 18px;
     border-radius: 12px;
-    color: #333;
+    color: #fff;
     font-weight: bold;
-    animation: pop 0.3s ease;
+    animation: pop 0.4s ease;
 }
 
 @keyframes pop {
     from { transform: scale(0.5); opacity: 0; }
     to { transform: scale(1); opacity: 1; }
 }
+
+#finalMessage {
+    position: absolute;
+    top: 45%;
+    width: 100%;
+    text-align: center;
+    font-size: 42px;
+    font-weight: bold;
+    display: none;
+    animation: fadeIn 2s ease forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+}
 </style>
 </head>
 
 <body>
 
+<canvas id="fireworks"></canvas>
+<div id="finalMessage">毛毛，新年快乐 🎆<br>我永远爱你 ❤️</div>
+
 <script>
+// 温馨提示
 const tips = [
 '毛毛要多喝水哦~','毛毛要保持微笑呀','毛毛每天都要元气满满',
 '毛毛要好好吃饭哦~','毛毛要保持好心情','毛毛要好好爱自己',
-'毛毛梦想成真','每天都超爱毛毛','毛毛新年快乐',
-'毛毛顺顺利利','毛毛要早点休息','毛毛所有的烦恼都消失',
-'毛毛天下第一好','毛毛别熬夜哦~','毛毛要多穿衣服~',
-'毛毛，你是最棒的','毛毛是最优秀的宝宝'
+'毛毛梦想成真','每天都超爱毛毛','毛毛顺顺利利',
+'毛毛要早点休息','毛毛所有的烦恼都消失',
+'毛毛天下第一好','毛毛别熬夜哦~',
+'毛毛要多穿衣服~','毛毛，你是最棒的','毛毛是最优秀的宝宝'
 ];
 
-const colors = [
-'lightpink','skyblue','lightgreen','lavender',
-'lightyellow','plum','coral','bisque','aquamarine',
-'mistyrose','honeydew','lavenderblush','oldlace'
-];
+const colors = ['#ff4d6d','#ffd166','#06d6a0','#4cc9f0','#f72585','#b5179e'];
 
 let count = 0;
-let max = 200;
+let max = 120;
 
 function createTip() {
     if (count >= max) {
         setTimeout(() => {
-            document.body.innerHTML = "<h1 style='text-align:center;margin-top:40vh;color:pink;'>毛毛，我永远爱你 ❤️</h1>";
+            document.getElementById("finalMessage").style.display = "block";
         }, 3000);
         return;
     }
@@ -65,7 +88,6 @@ function createTip() {
     div.className = "tip";
     div.innerText = tips[Math.floor(Math.random() * tips.length)];
     div.style.background = colors[Math.floor(Math.random() * colors.length)];
-
     div.style.left = Math.random() * (window.innerWidth - 250) + "px";
     div.style.top = Math.random() * (window.innerHeight - 60) + "px";
 
@@ -76,8 +98,62 @@ function createTip() {
 }
 
 createTip();
+
+
+// 烟花特效
+const canvas = document.getElementById("fireworks");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let particles = [];
+
+function createFirework() {
+    let x = Math.random() * canvas.width;
+    let y = Math.random() * canvas.height / 2;
+    let color = colors[Math.floor(Math.random() * colors.length)];
+
+    for (let i = 0; i < 50; i++) {
+        particles.push({
+            x: x,
+            y: y,
+            angle: Math.random() * 2 * Math.PI,
+            speed: Math.random() * 4 + 2,
+            radius: 2,
+            alpha: 1,
+            color: color
+        });
+    }
+}
+
+function animate() {
+    ctx.fillStyle = "rgba(0,0,0,0.2)";
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+
+    particles.forEach((p, index) => {
+        p.x += Math.cos(p.angle) * p.speed;
+        p.y += Math.sin(p.angle) * p.speed;
+        p.alpha -= 0.02;
+
+        ctx.globalAlpha = p.alpha;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, 2*Math.PI);
+        ctx.fillStyle = p.color;
+        ctx.fill();
+
+        if (p.alpha <= 0) {
+            particles.splice(index,1);
+        }
+    });
+
+    requestAnimationFrame(animate);
+}
+
+setInterval(createFirework, 800);
+animate();
+
 </script>
 
 </body>
 </html>
-
