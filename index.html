@@ -26,7 +26,7 @@ body {
     color: #333;
     font-weight: bold;
     animation: pop 0.3s ease;
-    z-index: 2; /* 在烟花上层 */
+    z-index: 2;
 }
 
 @keyframes pop {
@@ -34,27 +34,51 @@ body {
     to { transform: scale(1); opacity: 1; }
 }
 
-/* 🔥 关键修复：最终表白永远最上层 */
+/* 💖 最终表白 - 高级渐变发光版 */
 #finalMessage {
-    position: fixed;   /* 固定定位 */
-    top: 45%;
+    position: fixed;
+    top: 42%;
     left: 0;
     width: 100%;
     text-align: center;
-    font-size: 42px;
-    font-weight: bold;
-    color: #ff1493;
+    font-size: 38px;
+    font-weight: 700;
+    letter-spacing: 2px;
     display: none;
-    z-index: 9999;     /* 最高层 */
-    pointer-events: none; /* 不影响点击 */
-    text-shadow: 0 0 10px rgba(255,0,150,0.6);
+    z-index: 9999;
+    pointer-events: none;
+
+    background: linear-gradient(45deg, #ffffff, #ffe4f5, #ffd6a5);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    text-shadow:
+        0 0 10px rgba(255,255,255,0.8),
+        0 0 20px rgba(255,150,200,0.6),
+        0 0 30px rgba(255,180,100,0.5);
+
+    animation: lovePop 1.2s ease forwards;
+}
+
+@keyframes lovePop {
+    0% {
+        transform: scale(0.6);
+        opacity: 0;
+    }
+    60% {
+        transform: scale(1.1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1);
+    }
 }
 
 canvas {
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 1; /* 烟花最底层 */
+    z-index: 1;
 }
 </style>
 </head>
@@ -65,7 +89,7 @@ canvas {
 
 <div id="finalMessage">
     毛毛，新年快乐 🎆<br>
-    我永远爱你 ❤️
+    今年也要被我宠着 ❤️
 </div>
 
 <script>
@@ -115,6 +139,7 @@ createTip();
 /* 烟花效果 */
 const canvas = document.getElementById("fireworks");
 const ctx = canvas.getContext("2d");
+
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
