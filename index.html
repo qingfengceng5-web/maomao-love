@@ -9,60 +9,52 @@
 body {
     margin: 0;
     overflow: hidden;
-    font-family: -apple-system, BlinkMacSystemFont, "Microsoft YaHei", sans-serif;
-    background: linear-gradient(180deg, #1a1f3a 0%, #2b1055 50%, #0f2027 100%);
+    background: #cfefff; /* 浅蓝色背景 */
+    font-family: "Microsoft YaHei", sans-serif;
 }
 
-/* 祝福卡片 */
+/* 祝福语卡片 */
 .tip {
     position: absolute;
-    width: 60vw;
-    max-width: 260px;
+    width: 250px;
     height: 60px;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 16px;
-    border-radius: 15px;
-    backdrop-filter: blur(10px);
-    background: rgba(255,255,255,0.15);
-    color: #fff;
-    font-weight: 500;
-    text-align: center;
-    animation: fadeIn 0.5s ease;
-    z-index: 2;
+    font-size: 18px;
+    border-radius: 12px;
+    color: #333;
+    font-weight: bold;
+    animation: pop 0.3s ease;
+    z-index: 2; /* 在烟花上层 */
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: scale(0.8); }
-    to { opacity: 1; transform: scale(1); }
+@keyframes pop {
+    from { transform: scale(0.5); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
 }
 
-/* 最终表白 */
+/* 🔥 关键修复：最终表白永远最上层 */
 #finalMessage {
-    position: fixed;
-    top: 40%;
+    position: fixed;   /* 固定定位 */
+    top: 45%;
+    left: 0;
     width: 100%;
     text-align: center;
-    font-size: 28px;
+    font-size: 42px;
     font-weight: bold;
-    color: #fff;
-    text-shadow: 0 0 20px rgba(255, 100, 200, 0.9);
+    color: #ff1493;
     display: none;
-    z-index: 9999; /* 永远最上层 */
-    animation: glow 2s infinite alternate;
-}
-
-@keyframes glow {
-    from { text-shadow: 0 0 10px #ff4da6; }
-    to { text-shadow: 0 0 25px #ff99cc; }
+    z-index: 9999;     /* 最高层 */
+    pointer-events: none; /* 不影响点击 */
+    text-shadow: 0 0 10px rgba(255,0,150,0.6);
 }
 
 canvas {
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 1;
+    z-index: 1; /* 烟花最底层 */
 }
 </style>
 </head>
@@ -73,46 +65,54 @@ canvas {
 
 <div id="finalMessage">
     毛毛，新年快乐 🎆<br>
-    今年也要被我宠着 ❤️
+    我永远爱你 ❤️
 </div>
 
 <script>
 const tips = [
 '毛毛要多喝水哦~','毛毛要保持微笑呀','毛毛每天都要元气满满',
 '毛毛要好好吃饭哦~','毛毛要保持好心情','毛毛要好好爱自己',
-'毛毛梦想成真','每天都超爱毛毛','毛毛顺顺利利',
-'毛毛要早点休息','毛毛所有的烦恼都消失',
-'毛毛天下第一好','毛毛别熬夜哦~',
-'毛毛要多穿衣服~','毛毛，你是最棒的'
+'毛毛梦想成真','每天都超爱毛毛','毛毛新年快乐',
+'毛毛顺顺利利','毛毛要早点休息',
+'毛毛所有的烦恼都消失','毛毛天下第一好',
+'毛毛别熬夜哦~','毛毛要多穿衣服~',
+'毛毛，你是最棒的','毛毛是最优秀的宝宝'
+];
+
+const colors = [
+'lightpink','skyblue','lightgreen','lavender',
+'lightyellow','plum','coral','bisque','aquamarine',
+'mistyrose','honeydew','lavenderblush','oldlace'
 ];
 
 let count = 0;
-let max = 60; // 手机降低数量
+let max = 120;
 
 function createTip() {
     if (count >= max) {
         setTimeout(() => {
             document.getElementById("finalMessage").style.display = "block";
-        }, 2000);
+        }, 3000);
         return;
     }
 
     let div = document.createElement("div");
     div.className = "tip";
     div.innerText = tips[Math.floor(Math.random() * tips.length)];
+    div.style.background = colors[Math.floor(Math.random() * colors.length)];
 
-    div.style.left = Math.random() * (window.innerWidth - 200) + "px";
-    div.style.top = Math.random() * (window.innerHeight - 100) + "px";
+    div.style.left = Math.random() * (window.innerWidth - 250) + "px";
+    div.style.top = Math.random() * (window.innerHeight - 60) + "px";
 
     document.body.appendChild(div);
 
     count++;
-    setTimeout(createTip, 250);
+    setTimeout(createTip, 200);
 }
 
 createTip();
 
-/* 烟花 */
+/* 烟花效果 */
 const canvas = document.getElementById("fireworks");
 const ctx = canvas.getContext("2d");
 canvas.width = window.innerWidth;
@@ -123,20 +123,23 @@ let particles = [];
 function createFirework() {
     let x = Math.random() * canvas.width;
     let y = Math.random() * canvas.height / 2;
+    let color = colors[Math.floor(Math.random() * colors.length)];
 
-    for (let i = 0; i < 40; i++) {
+    for (let i = 0; i < 50; i++) {
         particles.push({
             x: x,
             y: y,
             angle: Math.random() * 2 * Math.PI,
-            speed: Math.random() * 3 + 1,
-            alpha: 1
+            speed: Math.random() * 4 + 2,
+            radius: 2,
+            alpha: 1,
+            color: color
         });
     }
 }
 
 function animate() {
-    ctx.fillStyle = "rgba(0,0,0,0.2)";
+    ctx.fillStyle = "rgba(207,239,255,0.2)";
     ctx.fillRect(0,0,canvas.width,canvas.height);
 
     particles.forEach((p, index) => {
@@ -146,8 +149,8 @@ function animate() {
 
         ctx.globalAlpha = p.alpha;
         ctx.beginPath();
-        ctx.arc(p.x, p.y, 2, 0, 2*Math.PI);
-        ctx.fillStyle = "#ff9ae6";
+        ctx.arc(p.x, p.y, p.radius, 0, 2*Math.PI);
+        ctx.fillStyle = p.color;
         ctx.fill();
 
         if (p.alpha <= 0) {
@@ -158,7 +161,7 @@ function animate() {
     requestAnimationFrame(animate);
 }
 
-setInterval(createFirework, 1000);
+setInterval(createFirework, 800);
 animate();
 </script>
 
