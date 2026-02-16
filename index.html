@@ -37,28 +37,35 @@ body {
 /* 💖 最终表白 - 高级渐变发光版 */
 #finalMessage {
     position: fixed;
-    top: 42%;
+    top: 40%;
     left: 0;
     width: 100%;
     text-align: center;
-    font-size: 38px;
-    font-weight: 700;
-    letter-spacing: 2px;
+    font-size: 42px;
+    font-weight: 800;
+    letter-spacing: 3px;
     display: none;
     z-index: 9999;
     pointer-events: none;
 
-    background: linear-gradient(45deg, #ffffff, #ffe4f5, #ffd6a5);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: #ffffff;
 
+    /* 粉色描边 */
+    -webkit-text-stroke: 1.5px #ff6fa5;
+
+    /* 柔和发光 */
     text-shadow:
-        0 0 10px rgba(255,255,255,0.8),
-        0 0 20px rgba(255,150,200,0.6),
-        0 0 30px rgba(255,180,100,0.5);
+        0 0 8px rgba(255, 111, 165, 0.6),
+        0 0 15px rgba(255, 150, 200, 0.4);
 
-    animation: lovePop 1.2s ease forwards;
+    animation: loveBreath 2s ease-in-out infinite;
 }
+
+@keyframes loveBreath {
+    0%,100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
 
 @keyframes lovePop {
     0% {
@@ -192,3 +199,4 @@ animate();
 
 </body>
 </html>
+
